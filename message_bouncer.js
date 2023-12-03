@@ -13,7 +13,6 @@ const supportedContentTypes = {
 const createServer = () => {
     return http.createServer((req, res) => {
         let body = '';
-        
         req.on('data', chunk => {
             body += chunk.toString();
         });
@@ -30,7 +29,7 @@ const createServer = () => {
             try {
                 switch(contentType) {
                     case 'application/json':
-                        JSON.parse(body); // try to parse if it's JSON
+                        JSON.parse(body);
                         break;
                     case 'application/xml':
                         xml2js.parseString(body, (err, result) => {
@@ -39,9 +38,7 @@ const createServer = () => {
                             }
                         });
                         break;
-                    // For 'text/plain', we don't need to do any validation.
-                }
-                
+                }                
                 res.writeHead(200, {'Content-Type': contentType});
                 res.end(body);
             } catch (error) {
